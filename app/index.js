@@ -6,10 +6,10 @@ var io = require('socket.io')(http);
 var server = require('./server')(io);
 
 app.get('/', function (req, res) {
-  res.sendfile('./views/home.html');
+  res.sendfile('app/views/home.html');
 });
 app.get('/:channel', function (req, res) {
-  res.sendfile('./views/channel.html');
+  res.sendfile('app/views/channel.html');
 });
 
 http.listen(3000, function () {
