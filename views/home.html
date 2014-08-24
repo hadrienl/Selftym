@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Selftym</title>
+  </head>
+  <body>
+    <p>Join or create a channel :</p>
+    <form>
+      <input type="text" name="channel" pattern="[a-zA-Z0_9]+" />
+      <button>Join</button>
+    </form>
+    <script type="text/javascript">
+      var form = document.getElementsByTagName('form')[0];
+      console.log(form);
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        window.location = '/'+form.channel.value;
+      });
+    </script>
+  </body>
+</html>

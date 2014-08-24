@@ -1,0 +1,19 @@
+{
+  "name": "Selftym",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "selfy",
+    "team"
+  ],
+  "author": "Hadrien Lanneau",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.8.5",
+    "socket.io": "~1.0.6"
+  }
+}
