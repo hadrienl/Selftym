@@ -1,16 +1,20 @@
 'use strict';
 
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var server = require('./server')(io);
+var express = require('express'),
+  app = express(),
+  path = require('path'),
+  http = require('http').Server(app),
+  io = require('socket.io')(http);
 
-app.get('/', function (req, res) {
-  res.sendfile('app/views/home.html');
+// Server statics
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', function (request, response) {
+  response.sendfile(__dirname + '/public/index.html');
 });
-app.get('/:channel', function (req, res) {
-  res.sendfile('app/views/channel.html');
-});
+
+// IO Server
+require('./server')(io);
 
 http.listen(3000, function () {
   console.log('listening on *:3000');
