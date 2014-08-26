@@ -1,0 +1,9 @@
+{
+  "name": "selftym",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "angularjs": "~1.2.23",
+    "bootstrap": "~3.2.0"
+  }
+}
