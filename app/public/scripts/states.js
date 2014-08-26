@@ -3,7 +3,7 @@
 angular.module('selftym')
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise('/');
-  
+
   $stateProvider
     .state('selftym', {
       abstract: true,
@@ -13,8 +13,13 @@ angular.module('selftym')
       url: '/',
       templateUrl: 'views/home.html'
     })
+    .state('selftym.channeljoin', {
+      url: '/{channel:[a-zA-Z0-9]+}/join',
+      templateUrl: 'views/channels/join.html',
+      controller: 'JoinCtrl'
+    })
     .state('selftym.channel', {
-      url: '/:channel',
+      url: '/{channel:[a-zA-Z0-9]+}',
       template: '<p>{{ channel }}</p>',
       controller: function ($scope, $stateParams) {
         $scope.channel = $stateParams.channel;
