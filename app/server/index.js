@@ -1,17 +1,15 @@
+var Users = require('./models/users');
+
 module.exports = function (io) {
-  var User = require('../models/user');
+  var User = require('./models/user');
 
   var server = this;
-  this.users = [];
+  this.users = new Users();
 
   io.on('connection', function (socket) {
     var user = new User(socket);
     
     server.users.push(user);
-
-    // TODO : first action : send all users data
-
-    require('./user_update')(server, user);
-    require('./disconnect')(server, user);
+    require('./events')(server, user);
   });
 };

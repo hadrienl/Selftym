@@ -4,17 +4,48 @@
     <title>Selftym</title>
   </head>
   <body>
-    <p>Join or create a channel :</p>
+    <div id="wall">
+      
+    </div>
     <form>
-      <input type="text" name="channel" pattern="[a-zA-Z0_9]+" />
-      <button>Join</button>
+      <label>Mood:</label>
+      <input type="text" name="mood" id="mood">
+      <button type="submit">Update</button>
     </form>
-    <script type="text/javascript">
-      var form = document.getElementsByTagName('form')[0];
-      console.log(form);
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        window.location = '/'+form.channel.value;
+    <ul id="users"></ul>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = io();
+      $('form').submit(function(){
+        socket.emit('user update',
+          JSON.stringify({
+            mood: $('#mood').val()
+          }));
+        return false;
+      });
+      socket.on('user update', function(data){
+        console.log(data);
+      });
+      socket.on('users', function (data) {
+        console.log('all users', data);
+      })
+      socket.on('user join', function(data){
+
+        try { data = JSON.parse(data); } catch (e) { return; }
+
+        console.log('new user', data);
+        var user = $('<li>' + data.id + '</li>');
+        user.id = data.id;
+        $('#users').append(user)
+      });
+      socket.on('user leave', function(data){
+
+        try { data = JSON.parse(data); } catch (e) { return; }
+
+        console.log('user leave', data);
+        var user = $('#' + data.id);
+        user.remove(true);
       });
     </script>
   </body>
