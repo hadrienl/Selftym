@@ -1,16 +1,24 @@
 'use strict';
 
 angular.module('selftym')
-.controller('PhotoboothCtrl', function ($scope, $stateParams, $timeout, Io) {
+.controller('PhotoboothCtrl', function ($scope) {
+
+  var channel = $scope.channel;
+
+  $scope.selfy = null;
+
   $scope.join = function () {
-    Io.query('channel:join', {
-        channel: $stateParams.channel,
-        nickname: $scope.nickname,
-        baseline: $scope.baseline
-      })
-      .then(function (data) {
-        console.log(data);
-      });
+    channel.$join(
+        $scope.selfy,
+        $scope.nickname,
+        $scope.baseline
+      )
+    .then(function () {
+      channel.joined = true;
+    })
+    .catch(function () {
+      channel.joined = false;
+    });
   };
 
   $scope.onError = function (error) {
@@ -18,9 +26,9 @@ angular.module('selftym')
   };
 
   $scope.onSelfy = function (selfy) {
-    Io.emit('channel:selfy', {
-      channel: $stateParams.channel,
-      selfy: selfy
-    });
+    $scope.selfy = selfy;
+    if (channel.joined) {
+      channel.$updateSelfy(selfy);
+    }
   };
 });

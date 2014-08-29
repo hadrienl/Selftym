@@ -1,33 +1,52 @@
 'use strict';
 
 module.exports = function (server, user) {
-  user._socket.on('channel:join', function (data) {
-    console.log(data);
+
+  /**
+   * Check if user has already joined a channel
+   */
+  user.$socket.on('channel:joined', function (channel) {
+    user.$socket.emit('channel:joined:callback', user.$isInChannel(channel));
+  });
+
+  /**
+   * A user ask to join the channel. He needs to send a selfy and a nickname
+   */
+  user.$socket.on('channel:join', function (data) {
     if (!data.channel) {
-      user._socket.emit('channel:join:callback', {
+      user.$socket.emit('channel:join:callback', {
         error: 'wrong channel'
       });
       return;
     }
-    user.join(data.channel);
+    user.$join(data.channel);
+
+    if (data.selfy) {
+      user.selfy = data.selfy;
+    }
     if (data.nickname) {
       user.nickname = data.nickname;
     }
     if (data.baseline) {
       user.baseline = data.baseline;
     }
-    console.log(user);
-    user._socket.emit('channel:join:callback', {
+    user.$socket.emit('channel:join:callback', {
       ok: true
     });
   });
 
-  user._socket.on('channel:selfy', function (data) {
+  /**
+   * User update his selfy. The selfy is broadcasted to all channel's users
+   */
+  user.$socket.on('channel:selfy', function (data) {
     user.selfy = data.selfy;
 
-    server.users.forEach(function (u) {
-      u._socket.emit('channel:update', {
-        user: user
+    user.$channels.forEach(function (channel) {
+      server.users.$inChannel(channel).forEach(function (u) {
+        u.$socket.emit('channel:update', {
+          channel: channel,
+          user: user
+        });
       });
     });
   });

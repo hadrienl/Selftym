@@ -5,6 +5,9 @@ angular.module('selftym')
   return {
     restrict: 'E',
     templateUrl: 'scripts/components/photobooth/photobooth.html',
-    controller: 'PhotoboothCtrl'
+    controller: 'PhotoboothCtrl',
+    scope: {
+      channel: '='
+    }
   };
 });

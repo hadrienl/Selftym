@@ -3,25 +3,39 @@
 var _ = require('lodash');
 
 var User = function (socket) {
-  this._socket = socket;
-  this.id = this._socket.id;
-  this._channels = [];
+  this.$socket = socket;
+  this.$channels = [];
+  this.id = this.$socket.id;
 };
-User.prototype.update = function (data) {
-  var self = this;
-  for (var i in data) {
-    if (i !== 'socket' && i !== 'id') {
-      self[i] = data[i];
-    }
-  }
+
+/**
+ * Check if user is in a channel
+ */
+User.prototype.$isInChannel = function (channel) {
+  return _.indexOf(this.$channels, channel) > -1;
 };
-User.prototype.join = function (channel) {
-  if (_.indexOf(this._channels, channel) > -1) {
+
+/**
+ * Join a channel
+ */
+User.prototype.$join = function (channel) {
+  if (this.$isInChannel(channel)) {
     return true;
   }
-  this._channels.push(channel);
+  this.$channels.push(channel);
   return true;
 };
+
+/**
+ * Leave all channels
+ */
+User.prototype.$leaveAllChannels = function () {
+  this.$channels.splice(0, this.$channels.length);
+};
+
+/**
+ * JSON representation
+ */
 User.prototype.toJSON = function () {
   return {
     id: this.id,

@@ -9,23 +9,29 @@ angular.module('selftym')
       onError: '&',
       onSelfy: '&'
     },
-    link: function (scope) {
-      scope.interval = 1;
-      scope.onStream = function (video) {
+    controller: function ($scope) {
+      $scope.interval = 1;
+      $scope.pause = false;
+      $scope.onStream = function (video) {
         takeSelfy(video);
       };
-      scope.error = function (error) {
-        scope.onError({error: error});
+      $scope.error = function (error) {
+        $scope.onError({error: error});
+      };
+      $scope.togglePause = function () {
+        $scope.pause = !$scope.pause;
       };
 
       function takeSelfy(video) {
-        scope.onSelfy({
-          selfy: getVideoData(video, 0, 0, video.width, video.height)
-        });
+        if (!$scope.pause) {
+          $scope.onSelfy({
+            selfy: getVideoData(video, 0, 0, video.width, video.height)
+          });
+        }
 
         $timeout(function () {
           takeSelfy(video);
-        }, scope.interval * 1000);
+        }, $scope.interval * 1000);
       }
 
       function getVideoData(video) {

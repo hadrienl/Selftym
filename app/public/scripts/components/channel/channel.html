@@ -1,4 +1,15 @@
-<photobooth></photobooth>
-<p>
-  <img ng-src="{{testselfy}}"/>
-</p>
+<div
+  class="no-joined"
+  ng-class="{
+    'minimized': miniphotobooth
+  }">
+  <photobooth
+    channel="channel"></photobooth>
+</div>
+<div
+  class="channel"
+  ng-if="channel.joined">
+  <p>
+    <img ng-src="{{testselfy}}"/>
+  </p>
+</div>

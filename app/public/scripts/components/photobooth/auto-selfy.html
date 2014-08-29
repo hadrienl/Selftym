@@ -1,7 +1,8 @@
 <webcam
   placeholder=""
   on-access-denied="error(err)"
-  on-streaming="onStream(video)"></webcam>
+  on-streaming="onStream(video)"
+  ng-click="togglePause()"></webcam>
 <label>Take selfy every n seconds</label>
 <input
   type="number"
