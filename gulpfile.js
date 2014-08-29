@@ -3,17 +3,18 @@
 var gulp = require('gulp'),
   $ = require('gulp-load-plugins')(),
   expressService = require('gulp-express-service'),
-  publicPath = 'app/public',
-  jsPublicFiles = [publicPath + '/scripts/**/*.js', 'test/**/*.js', 'app/server/**/*.js'],
+  clientPath = 'app/public',
+  jsClientFiles = [clientPath + '/scripts/**/*.js', 'test/**/*.js'],
   jsServerFiles = ['app/**/*.js', '!app/public/*'],
-  lessFiles = [publicPath + '/styles/**/*.less'];
+  jsFiles = ['app/**/*.js'],
+  lessFiles = [clientPath + '/styles/**/*.less'];
 
 gulp.task('default', function () {
   gulp.start('build');
 });
 
 gulp.task('lint', function () {
-  return gulp.src(jsPublicFiles)
+  return gulp.src(jsClientFiles)
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
     .pipe($.jshint.reporter('fail'));
@@ -27,17 +28,17 @@ gulp.task('less', function () {
       $.util.log($.util.colors.red('Invalid less'));
     })
     .pipe($.autoprefixer('last 2 version', 'ie 9'))
-    .pipe(gulp.dest(publicPath + '/styles'));
+    .pipe(gulp.dest(clientPath + '/styles'));
 });
 
 gulp.task('wiredep', function () {
   var wiredep = require('wiredep').stream;
-  return gulp.src([publicPath + '/index.html'])
+  return gulp.src([clientPath + '/index.html'])
     .pipe(wiredep({
-      directory: publicPath + '/bower_components',
+      directory: clientPath + '/bower_components',
       exclude: [ /bootstrap/, /jquery/ ]
     }))
-    .pipe(gulp.dest(publicPath));
+    .pipe(gulp.dest(clientPath));
 });
 
 gulp.task('index', ['wiredep', 'less']);
@@ -50,5 +51,5 @@ gulp.task('server', function () {
 gulp.task('watch', ['server', 'lint', 'less', 'index'], function () {
   gulp.watch(jsServerFiles, ['server']);
   gulp.watch(lessFiles, ['less']);
-  gulp.watch(jsPublicFiles, ['lint']);
+  gulp.watch(jsFiles, ['lint']);
 });

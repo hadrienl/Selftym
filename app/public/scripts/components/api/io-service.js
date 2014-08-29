@@ -1,8 +1,15 @@
 'use strict';
 
 angular.module('selftym')
-.service('Io', function ($q, $timeout) {
-  var socket = io();
+.service('Io', function ($q, $timeout, UUID) {
+  var socket = io(),
+    ls = window.localStorage;
+
+  if (!ls.session) {
+    ls.session = UUID();
+  }
+
+  socket.emit('auth', ls.session);
 
   return {
     query: function (request, params) {
