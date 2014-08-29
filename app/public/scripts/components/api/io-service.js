@@ -16,9 +16,13 @@ angular.module('selftym')
       return socket.emit(e, data);
     },
     on: function (e, callback) {
-      return socket.on(e, function () {
+      var on = socket.on(e, function () {
         $rootScope.$apply(callback.apply(this, arguments));
       });
+
+      return function () {
+        socket.removeListener(on);
+      };
     },
     query: function (request, params) {
       var deferred = $q.defer(),

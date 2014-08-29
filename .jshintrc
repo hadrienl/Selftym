@@ -20,6 +20,21 @@
   "white": true,
   "globals": {
     "require": false,
-    "console": false
+    "console": false,
+
+    "after": false,
+    "afterEach": false,
+    "angular": false,
+    "before": false,
+    "beforeEach": false,
+    "browser": false,
+    "describe": false,
+    "xdescribe": false,
+    "expect": false,
+    "inject": false,
+    "it": false,
+    "xit": false,
+    "jasmine": false,
+    "spyOn": false
   }
 }

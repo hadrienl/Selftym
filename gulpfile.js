@@ -4,10 +4,11 @@ var gulp = require('gulp'),
   $ = require('gulp-load-plugins')(),
   expressService = require('gulp-express-service'),
   clientPath = 'app/public',
-  jsClientFiles = [clientPath + '/scripts/**/*.js', 'test/**/*.js'],
+  jsClientTestFiles = clientPath + '/scripts/**/*-spec.js',
+  jsClientFiles = [clientPath + '/scripts/**/*.js', '!' + jsClientTestFiles],
   jsServerFiles = ['app/**/*.js', '!app/public/*'],
-  jsFiles = ['app/**/*.js'],
-  lessFiles = [clientPath + '/styles/**/*.less'];
+  jsFiles = 'app/**/*.js',
+  lessFiles = clientPath + '/styles/**/*.less';
 
 gulp.task('default', function () {
   gulp.start('build');
@@ -18,6 +19,14 @@ gulp.task('lint', function () {
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
     .pipe($.jshint.reporter('fail'));
+});
+
+gulp.task('test', function () {
+  return gulp.src('undefined.js')
+    .pipe($.karma({
+      configFile: 'karma.conf.js',
+      action: 'run'
+    }));
 });
 
 gulp.task('less', function () {
@@ -52,4 +61,5 @@ gulp.task('watch', ['server', 'lint', 'less', 'index'], function () {
   gulp.watch(jsServerFiles, ['server']);
   gulp.watch(lessFiles, ['less']);
   gulp.watch(jsFiles, ['lint']);
+  gulp.watch(jsClientTestFiles, ['test']);
 });
