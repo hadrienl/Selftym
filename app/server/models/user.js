@@ -25,7 +25,8 @@ User.prototype.join = function (channel) {
 User.prototype.toJSON = function () {
   return {
     id: this.id,
-    mood: this.mood
+    mood: this.mood,
+    selfy: this.selfy
   };
 };
 

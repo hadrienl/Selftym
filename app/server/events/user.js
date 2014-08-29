@@ -21,14 +21,4 @@ module.exports = function (server, user) {
       ok: true
     });
   });
-
-  user._socket.on('channel:selfy', function (data) {
-    user.selfy = data.selfy;
-
-    server.users.forEach(function (u) {
-      u._socket.emit('channel:update', {
-        user: user
-      });
-    });
-  });
 };

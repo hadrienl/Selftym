@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('selftym')
-.service('Io', function ($q, $timeout, UUID) {
+.service('Io', function ($rootScope, $q, $timeout, UUID) {
   var socket = io(),
     ls = window.localStorage;
 
@@ -12,6 +12,14 @@ angular.module('selftym')
   socket.emit('auth', ls.session);
 
   return {
+    emit: function (e, data) {
+      return socket.emit(e, data);
+    },
+    on: function (e, callback) {
+      return socket.on(e, function () {
+        $rootScope.$apply(callback.apply(this, arguments));
+      });
+    },
     query: function (request, params) {
       var deferred = $q.defer(),
         done = false;
@@ -23,6 +31,8 @@ angular.module('selftym')
         socket.removeListener(on);
 
         done = true;
+
+        $rootScope.$apply();
       });
 
       $timeout(function () {

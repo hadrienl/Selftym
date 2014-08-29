@@ -1,3 +1,6 @@
 'use strict';
 
-angular.module('selftym', ['ui.router']);
+angular.module('selftym', [
+  'ui.router',
+  'webcam'
+]);

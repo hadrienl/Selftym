@@ -3,7 +3,9 @@
   <form
     name="form"
     ng-submit="join()">
-    <p>Insérer la vue webcam ici</p>
+    <auto-selfy
+      on-error="onError(error)"
+      on-selfy="onSelfy(selfy)"></auto-selfy>
     <input
       type="text"
       name="nickname"

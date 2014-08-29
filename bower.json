@@ -5,6 +5,10 @@
   "dependencies": {
     "angular": "~1.2.23",
     "bootstrap": "~3.2.0",
-    "angular-ui-router": "~0.2.10"
+    "angular-ui-router": "~0.2.10",
+    "webcam-directive": "~1.1.0"
+  },
+  "resolutions": {
+    "angular": "~1.2.23"
   }
 }
