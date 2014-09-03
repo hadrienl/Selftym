@@ -4,7 +4,7 @@
   var listeners, expectations;
 
   window.io = function () {
-    listeners = [],
+    listeners = [];
     expectations = {};
 
     return {
