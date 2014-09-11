@@ -6,17 +6,24 @@
     <auto-selfy
       on-error="onError(error)"
       on-selfy="onSelfy(selfy)"></auto-selfy>
-    <input
-      type="text"
-      name="nickname"
-      ng-model="nickname"
-      placeholder="Nickname">
-    <input
-      type="text"
-      name="baseline"
-      ng-model="baseline"
-      placeholder="Baseline">
+    <div class="form-group">
+      <input
+        type="text"
+        name="nickname"
+        class="form-control"
+        ng-model="nickname"
+        placeholder="Nickname">
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        name="baseline"
+        class="form-control"
+        ng-model="baseline"
+        placeholder="Baseline">
+    </div>
     <button
-      type="submit">Join</button>
+      type="submit"
+      class="btn primary">Join</button>
   </form>
 </div>

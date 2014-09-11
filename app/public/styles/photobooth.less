@@ -1,0 +1,25 @@
+.photobooth {
+  @width: 400px;
+  @height: 200px;
+  width: @width;
+  height: auto;
+  background: #e7e7e7;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  margin-left: -@width / 2;
+  padding: 10px;
+  border-radius: 5px;
+
+  .settings-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 14px;
+    padding: 4px;
+  }
+
+  video {
+    width: 100%;
+  }
+}

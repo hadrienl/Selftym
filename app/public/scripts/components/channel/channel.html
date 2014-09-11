@@ -1,4 +1,18 @@
 <div
+  class="channel-panel">
+  <h2
+    class="title-channel">
+    <a
+      ui-sref="selftym.channel({channel: channel.name})">
+      #{{ channel.name }}
+    </a>
+  </h2>
+  <button
+    class="settings-toggle glyphicon glyphicon-cog">
+  </button>
+</div>
+
+<div
   class="no-joined"
   ng-class="{
     'minimized': miniphotobooth
