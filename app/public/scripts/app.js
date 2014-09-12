@@ -2,5 +2,6 @@
 
 angular.module('selftym', [
   'ui.router',
-  'webcam'
+  'webcam',
+  'ui.bootstrap'
 ]);
