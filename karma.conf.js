@@ -14,6 +14,7 @@ module.exports = function (config) {
       'app/public/bower_components/angular-ui-router/release/angular-ui-router.js',
       'app/public/bower_components/angular-ui-router/release/angular-ui-router.js',
       'app/public/bower_components/webcam-directive/app/scripts/webcam.js',
+      'app/public/bower_components/angular-bootstrap-jbruni/ui-bootstrap-tpls.js',
       'app/public/scripts/mocks/**/*.js',
       'app/public/scripts/app.js',
       'app/public/scripts/utils/**/*.js',

@@ -45,7 +45,7 @@ gulp.task('wiredep', function () {
   return gulp.src([clientPath + '/index.html'])
     .pipe(wiredep({
       directory: clientPath + '/bower_components',
-      exclude: [ /bootstrap/, /jquery/ ]
+      exclude: [ /\/bootstrap\//, /jquery/ ]
     }))
     .pipe(gulp.dest(clientPath));
 });

@@ -1,21 +1,13 @@
 <div>
-  <a
-    class="settings-toggle glyphicon glyphicon-cog"
-    ng-click="tempMenu = !tempMenu">
-  </a>
   <webcam
     placeholder=""
     on-access-denied="error(err)"
     on-streaming="onStream(video)"
     ng-click="togglePause()"></webcam>
-  <div class="form-group"
-    ng-show="tempMenu">
-    <label
-      for="auto-selfy-interval">Take selfy every n seconds</label>
-    <input
-      id="auto-selfy-interval"
-      type="number"
-      class="form-control"
-      ng-model="interval">
-  </div>
+  <a
+    class="settings-toggle glyphicon glyphicon-cog"
+    popover-template="scripts/components/photobooth/settings.html"
+    popover-trigger="click"
+    popover-placement="bottom">
+  </a>
 </div>
