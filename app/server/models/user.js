@@ -39,8 +39,9 @@ User.prototype.$leaveAllChannels = function () {
 User.prototype.toJSON = function () {
   return {
     id: this.id,
-    mood: this.mood,
-    selfy: this.selfy
+    selfy: this.selfy,
+    nickname: this.nickname,
+    mood: this.mood
   };
 };
 

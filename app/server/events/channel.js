@@ -27,11 +27,21 @@ module.exports = function (server, user) {
     if (data.nickname) {
       user.nickname = data.nickname;
     }
-    if (data.baseline) {
-      user.baseline = data.baseline;
+    if (data.mood) {
+      user.mood = data.mood;
     }
+
+    // Respond user with the current channel data
     user.$socket.emit('channel:join:callback', {
-      ok: true
+      users: server.users.$inChannel(data.channel)
+    });
+
+    // Notify all users in this channel that a new user has joined
+    server.users.$inChannel(data.channel).forEach(function (u) {
+      u.$socket.emit('channel:user_joined', {
+        channel: data.channel,
+        user: user
+      });
     });
   });
 
@@ -41,6 +51,7 @@ module.exports = function (server, user) {
   user.$socket.on('channel:selfy', function (data) {
     user.selfy = data.selfy;
 
+    // Send new selfy to all users in all same channels as user
     user.$channels.forEach(function (channel) {
       server.users.$inChannel(channel).forEach(function (u) {
         u.$socket.emit('channel:update', {

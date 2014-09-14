@@ -10,8 +10,4 @@ angular.module('selftym')
     .then(function (data) {
       channel.joined = data;
     });
-
-  channel.$onChannelUpdate(function (data) {
-    $scope.testselfy = data.user.selfy;
-  });
 });

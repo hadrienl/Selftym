@@ -23,7 +23,13 @@
 <div
   class="channel"
   ng-if="channel.joined">
-  <p>
-    <img ng-src="{{testselfy}}"/>
-  </p>
+  <ul
+    ng-if="channel.users">
+    <li
+      ng-repeat="user in channel.users">
+      <span>{{ user.nickname }}</span>
+      <img ng-src="{{ user.selfy }}"/>
+      <span>{{ user.baseline }}</span>
+    </li>
+  </ul>
 </div>
