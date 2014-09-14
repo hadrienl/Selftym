@@ -74,7 +74,8 @@ gulp.task('clean-dist', function () {
     .pipe($.rimraf());
 });
 
-gulp.task('build', ['clean-dist', 'index'/*, 'ngtemplates'*/], function () {
+
+gulp.task('build-public', ['index'/*, 'ngtemplates'*/], function () {
   var jsAppFilter = $.filter('**/scripts.js'),
     jsVendorFilter = $.filter('**/vendor.js'),
     cssVendorFilter = $.filter('**/vendor.css');
@@ -95,9 +96,22 @@ gulp.task('build', ['clean-dist', 'index'/*, 'ngtemplates'*/], function () {
     .pipe($.useref.restore())
     .pipe($.useref())
     .pipe($.revReplace())
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist/public'));
 });
 
-gulp.task('deploy', ['lint', 'test', 'build'], function () {
-  console.error('send to server');
+gulp.task('build-server', function () {
+  gulp.src(['app/server/*'])
+    .pipe(gulp.dest('dist/server'));
+});
+
+gulp.task('build', ['clean-dist', 'build-public', 'build-server']);
+
+gulp.task('zip', ['build'], function () {
+  return gulp.src('dist/**/*')
+    .pipe($.zip('release.zip'))
+    .pipe(gulp.dest('dist'));
+})
+
+gulp.task('deploy', ['lint', 'test', 'zip'], function () {
+  
 })
