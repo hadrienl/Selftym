@@ -45,7 +45,10 @@ gulp.task('wiredep', function () {
   return gulp.src([clientPath + '/index.html'])
     .pipe(wiredep({
       directory: clientPath + '/bower_components',
-      exclude: [ /\/bootstrap\//, /jquery/ ]
+      exclude: [
+        /\/bootstrap\//,
+        /jquery/
+      ]
     }))
     .pipe(gulp.dest(clientPath));
 });
@@ -63,3 +66,38 @@ gulp.task('watch', ['server', 'lint', 'less', 'index'], function () {
   gulp.watch(jsFiles, ['lint']);
   gulp.watch(jsClientTestFiles, ['test']);
 });
+
+gulp.task('clean-dist', function () {
+  return gulp.src(['dist'], {
+      read: false
+    })
+    .pipe($.rimraf());
+});
+
+gulp.task('build', ['clean-dist', 'index'/*, 'ngtemplates'*/], function () {
+  var jsAppFilter = $.filter('**/scripts.js'),
+    jsVendorFilter = $.filter('**/vendor.js'),
+    cssVendorFilter = $.filter('**/vendor.css');
+
+  return gulp.src(['app/public/*.html', '!app/public/bower_components/**'])
+    .pipe($.useref.assets())
+    .pipe(cssVendorFilter)
+    .pipe($.minifyCss())
+    .pipe(cssVendorFilter.restore())
+    .pipe(jsAppFilter)
+    .pipe($.ngAnnotate())
+    .pipe($.uglify())
+    .pipe(jsAppFilter.restore())
+    .pipe(jsVendorFilter)
+    .pipe($.uglify())
+    .pipe(jsVendorFilter.restore())
+    .pipe($.rev())
+    .pipe($.useref.restore())
+    .pipe($.useref())
+    .pipe($.revReplace())
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('deploy', ['lint', 'test', 'build'], function () {
+  console.error('send to server');
+})
