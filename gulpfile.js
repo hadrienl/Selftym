@@ -11,7 +11,7 @@ var gulp = require('gulp'),
   lessFiles = clientPath + '/styles/**/*.less';
 
 gulp.task('default', function () {
-  gulp.start('build');
+  return gulp.start('build');
 });
 
 gulp.task('lint', function () {
@@ -68,7 +68,7 @@ gulp.task('watch', ['server', 'lint', 'less', 'index'], function () {
 });
 
 gulp.task('clean-dist', function () {
-  return gulp.src(['dist'], {
+  return gulp.src(['dist/*'], {
       read: false
     })
     .pipe($.rimraf());
@@ -96,22 +96,39 @@ gulp.task('build-public', ['index'/*, 'ngtemplates'*/], function () {
     .pipe($.useref.restore())
     .pipe($.useref())
     .pipe($.revReplace())
-    .pipe(gulp.dest('dist/public'));
+    .pipe(gulp.dest('dist/app/public'));
 });
 
 gulp.task('build-server', function () {
-  gulp.src(['app/server/*'])
-    .pipe(gulp.dest('dist/server'));
+  return  gulp.src(['app/server/**/*'])
+    .pipe(gulp.dest('dist/app/server'));
 });
 
-gulp.task('build', ['clean-dist', 'build-public', 'build-server']);
-
-gulp.task('zip', ['build'], function () {
-  return gulp.src('dist/**/*')
-    .pipe($.zip('release.zip'))
+gulp.task('build-all', ['build-public', 'build-server'], function () {
+  return gulp.src(['app/index.js', 'package.json'])
     .pipe(gulp.dest('dist'));
+});
+gulp.task('build', ['clean-dist'], function () {
+  return gulp.start('build-all');
 })
 
-gulp.task('deploy', ['lint', 'test', 'zip'], function () {
-  
+gulp.task('deploy-post', function () {
+  // TODO
+  return;
+  $.ssh.exec({
+    command: [''],
+    sshConfig: {
+      host: '',
+      port: 22,
+      username: 'username',
+      password: 'password'
+    }
+  });
 })
+gulp.task('deploy', ['lint', /*'test',*/ 'build-all', 'deploy-post'], function () {
+  var sftpConfig = require('./prod');
+  sftpConfig.remotePath = sftpConfig.remotePath  + 'release-' + (+new Date());
+  return gulp.src(['dist/**/**'])
+    .pipe(require('gulp-debug')())
+    .pipe($.sftp(sftpConfig))
+});
