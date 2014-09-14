@@ -1,3 +1,5 @@
 node_modules
 app/public/bower_components
 app/public/styles/main.css
+dist
+prod.json
